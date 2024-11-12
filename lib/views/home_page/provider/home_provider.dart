@@ -6,7 +6,11 @@ class HomeProvider with ChangeNotifier {
   bool isPlatform = true;
   List<ContactModel> allContact = [
     ContactModel(
-        name: "dax", contact: "874124854", dob: "10/12/2005", email: "sdf"),
+        name: "dax",
+        contact: "874124854",
+        dob: "10/12/2005",
+        email: "sdf",
+        isFavorite: false),
   ];
   int index = 0;
 
@@ -47,6 +51,15 @@ class HomeProvider with ChangeNotifier {
 
   void deleteContact(int inx) {
     allContact.removeAt(inx);
+    notifyListeners();
+  }
+
+  void addFavoriteContact() {
+    if (allContact[index].isFavorite == false) {
+      allContact[index].isFavorite = true;
+    } else {
+      allContact[index].isFavorite = false;
+    }
     notifyListeners();
   }
 }

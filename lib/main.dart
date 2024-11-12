@@ -4,6 +4,7 @@ import 'package:pr1_platform_converter/routes/app_routes.dart';
 import 'package:pr1_platform_converter/views/add_contact_page/provider/add_contact_provider.dart';
 import 'package:pr1_platform_converter/views/bottom_navigation_page/provider/bottom_provider.dart';
 import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
+import 'package:pr1_platform_converter/views/recent_page/provider/recent_contact_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -25,6 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: BottomProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: RecentContactProvider(),
         )
       ],
       child: Consumer<HomeProvider>(
