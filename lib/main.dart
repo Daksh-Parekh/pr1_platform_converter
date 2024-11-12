@@ -1,7 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pr1_platform_converter/routes/app_routes.dart';
+import 'package:pr1_platform_converter/views/add_contact_page/provider/add_contact_provider.dart';
+import 'package:pr1_platform_converter/views/bottom_navigation_page/provider/bottom_provider.dart';
+import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,6 +15,36 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Platform.isAndroid ? MaterialApp() : CupertinoApp();
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: HomeProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: AddContactProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: BottomProvider(),
+        )
+      ],
+      child: Consumer<HomeProvider>(
+        builder: (context, value, child) {
+          return value.isPlatform
+              ? MaterialApp(
+                  themeMode: value.mode,
+                  darkTheme: ThemeData(brightness: Brightness.dark),
+                  // theme: ThemeData(),
+                  // theme: ThemeData(brightness: value.brightness),
+                  routes: AppRoutes.routes,
+                )
+              : CupertinoApp(
+                  theme: CupertinoThemeData(
+                    brightness: value.brightness,
+                  ),
+                  routes: AppRoutes.iOSRoutes,
+                );
+        },
+      ),
+    );
   }
 }
