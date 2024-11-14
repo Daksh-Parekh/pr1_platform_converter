@@ -104,11 +104,12 @@ class _HomePageState extends State<HomePage> {
           itemCount: hWatch.allContact.length,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.pushNamed(context, '/add_contact_Page');
         },
-        child: Text("Add"),
+        icon: Icon(Icons.add),
+        label: Text("Add"),
       ),
     );
   }

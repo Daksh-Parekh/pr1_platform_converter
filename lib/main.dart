@@ -35,11 +35,13 @@ class MyApp extends StatelessWidget {
         builder: (context, value, child) {
           return value.isPlatform
               ? MaterialApp(
+                  debugShowCheckedModeBanner: false,
                   themeMode: value.mode,
                   darkTheme: ThemeData(brightness: Brightness.dark),
                   routes: AppRoutes.routes,
                 )
               : CupertinoApp(
+                  debugShowCheckedModeBanner: false,
                   theme: CupertinoThemeData(
                     brightness: value.brightness,
                   ),

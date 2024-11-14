@@ -95,6 +95,9 @@ class _HomeIosPageState extends State<HomeIosPage> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 60,
+            )
           ],
         ),
       ),
