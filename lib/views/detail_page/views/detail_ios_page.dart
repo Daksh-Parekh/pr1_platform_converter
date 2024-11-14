@@ -5,7 +5,9 @@ import 'package:pr1_platform_converter/utils/extension.dart';
 import 'package:pr1_platform_converter/views/add_contact_page/provider/add_contact_provider.dart';
 import 'package:pr1_platform_converter/views/home_page/models/contact_model.dart';
 import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
+import 'package:pr1_platform_converter/views/recent_page/provider/recent_contact_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailIosPage extends StatefulWidget {
   const DetailIosPage({super.key});
@@ -20,113 +22,129 @@ class _DetailIosPageState extends State<DetailIosPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController dobController = TextEditingController();
   late HomeProvider hRead;
-
+  late RecentContactProvider rRead;
   @override
   Widget build(BuildContext context) {
     hRead = context.read<HomeProvider>();
+    rRead = context.read<RecentContactProvider>();
 
     ContactModel model =
         ModalRoute.of(context)!.settings.arguments as ContactModel;
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text("Detail Page"),
-        trailing: IconButton(
-          onPressed: () {
-            nameController.text = model.name!;
-            emailController.text = model.email!;
-            contactController.text = model.contact!;
-            dobController.text = model.dob!;
-            showCupertinoDialog(
-              context: context,
-              builder: (context) {
-                return CupertinoAlertDialog(
-                  title: Text("Update Details"),
-                  content: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        CupertinoTextFormFieldRow(
-                          controller: nameController,
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            return value!.isEmpty
-                                ? "Please Enter your name"
-                                : null;
-                          },
-                          placeholder: "Enter Name",
-                          prefix: Icon(CupertinoIcons.person),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        10.h,
-                        CupertinoTextFormFieldRow(
-                          controller: contactController,
-                          textInputAction: TextInputAction.next,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          keyboardType: TextInputType.phone,
-                          maxLength: 10,
-                          validator: (value) {
-                            return value!.isEmpty
-                                ? "Please Enter your Coontact"
-                                : value.length < 10
-                                    ? "Contact should be of 10 digits"
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              onPressed: () {
+                nameController.text = model.name!;
+                emailController.text = model.email!;
+                contactController.text = model.contact!;
+                dobController.text = model.dob!;
+                showCupertinoDialog(
+                  context: context,
+                  builder: (context) {
+                    return CupertinoAlertDialog(
+                      title: Text("Update Details"),
+                      content: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            CupertinoTextFormFieldRow(
+                              controller: nameController,
+                              textInputAction: TextInputAction.next,
+                              validator: (value) {
+                                return value!.isEmpty
+                                    ? "Please Enter your name"
                                     : null;
-                          },
-                          placeholder: "Enter Contact Number",
-                          prefix: Icon(CupertinoIcons.phone),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                              },
+                              placeholder: "Enter Name",
+                              prefix: Icon(CupertinoIcons.person),
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            10.h,
+                            CupertinoTextFormFieldRow(
+                              controller: contactController,
+                              textInputAction: TextInputAction.next,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              keyboardType: TextInputType.phone,
+                              maxLength: 10,
+                              validator: (value) {
+                                return value!.isEmpty
+                                    ? "Please Enter your Coontact"
+                                    : value.length < 10
+                                        ? "Contact should be of 10 digits"
+                                        : null;
+                              },
+                              placeholder: "Enter Contact Number",
+                              prefix: Icon(CupertinoIcons.phone),
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            10.h,
+                            CupertinoTextFormFieldRow(
+                              controller: dobController,
+                              textInputAction: TextInputAction.next,
+                              validator: (value) {
+                                return value!.isEmpty
+                                    ? "Please Enter your dob"
+                                    : null;
+                              },
+                              placeholder: "Enter DOB",
+                              prefix: Icon(CupertinoIcons.person),
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            10.h,
+                          ],
                         ),
-                        10.h,
-                        CupertinoTextFormFieldRow(
-                          controller: dobController,
-                          textInputAction: TextInputAction.next,
-                          validator: (value) {
-                            return value!.isEmpty
-                                ? "Please Enter your dob"
-                                : null;
+                      ),
+                      actions: [
+                        CupertinoDialogAction(
+                          onPressed: () {
+                            Navigator.pop(context);
                           },
-                          placeholder: "Enter DOB",
-                          prefix: Icon(CupertinoIcons.person),
-                          decoration: BoxDecoration(
-                            border: Border.all(),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                          child: Text("CANCEL"),
                         ),
-                        10.h,
+                        CupertinoDialogAction(
+                          onPressed: () {
+                            ContactModel model = ContactModel(
+                              name: nameController.text,
+                              email: emailController.text,
+                              dob: dobController.text,
+                            );
+                            hRead.updateContacts(model);
+                            Navigator.pop(context);
+                          },
+                          child: Text("SAVE"),
+                        ),
                       ],
-                    ),
-                  ),
-                  actions: [
-                    CupertinoDialogAction(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text("CANCEL"),
-                    ),
-                    CupertinoDialogAction(
-                      onPressed: () {
-                        ContactModel model = ContactModel(
-                          name: nameController.text,
-                          email: emailController.text,
-                          dob: dobController.text,
-                        );
-                        hRead.updateContacts(model);
-                        Navigator.pop(context);
-                      },
-                      child: Text("SAVE"),
-                    ),
-                  ],
+                    );
+                  },
                 );
               },
-            );
-          },
-          icon: Icon(CupertinoIcons.pen),
+              icon: Icon(CupertinoIcons.pen),
+            ),
+            IconButton(
+              onPressed: () {
+                hRead.addFavoriteContact();
+
+                Navigator.pop(context);
+              },
+              icon: model.isFavorite ?? false
+                  ? const Icon(CupertinoIcons.star_fill)
+                  : Icon(CupertinoIcons.star),
+            ),
+          ],
         ),
       ),
       child: Padding(
@@ -162,11 +180,24 @@ class _DetailIosPageState extends State<DetailIosPage> {
               trailing: Row(
                 children: [
                   IconButton.filledTonal(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await launchUrl(Uri.parse('tel:${model.contact}'));
+
+                      RecentContactModel rm = RecentContactModel(
+                        rName: model.name,
+                        rImg: model.image,
+                        rContact: model.contact,
+                        remail: model.email,
+                        rdate: DateTime.now(),
+                      );
+                      rRead.addRecentContact(rm);
+                    },
                     icon: Icon(CupertinoIcons.phone),
                   ),
                   IconButton.filledTonal(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await launchUrl(Uri.parse('sms:${model.contact}'));
+                    },
                     icon: Icon(Icons.message_rounded),
                   ),
                 ],

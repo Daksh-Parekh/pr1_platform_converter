@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pr1_platform_converter/main.dart';
 import 'package:pr1_platform_converter/utils/extension.dart';
+import 'package:pr1_platform_converter/utils/helper/shr_helper.dart';
 import 'package:pr1_platform_converter/views/add_contact_page/provider/add_contact_provider.dart';
 import 'package:pr1_platform_converter/views/home_page/models/contact_model.dart';
 import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
@@ -179,6 +180,9 @@ class _AddContactPageState extends State<AddContactPage> {
                       dob: dob,
                       image: images);
                   homeRead.addContacts(cm);
+
+                  ShrHelper helps = ShrHelper();
+                  helps.saveContacts(name, contact, email);
                   Navigator.pop(context);
                 }
               },

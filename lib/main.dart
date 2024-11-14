@@ -37,8 +37,6 @@ class MyApp extends StatelessWidget {
               ? MaterialApp(
                   themeMode: value.mode,
                   darkTheme: ThemeData(brightness: Brightness.dark),
-                  // theme: ThemeData(),
-                  // theme: ThemeData(brightness: value.brightness),
                   routes: AppRoutes.routes,
                 )
               : CupertinoApp(

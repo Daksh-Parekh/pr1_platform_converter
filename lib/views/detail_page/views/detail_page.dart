@@ -94,10 +94,12 @@ class _DetailPageState extends State<DetailPage> {
                       await launchUrl(Uri.parse('tel:${model.contact}'));
 
                       RecentContactModel rm = RecentContactModel(
-                          rName: model.name,
-                          rImg: model.image,
-                          rContact: model.contact,
-                          remail: model.email);
+                        rName: model.name,
+                        rImg: model.image,
+                        rContact: model.contact,
+                        remail: model.email,
+                        rdate: DateTime.now(),
+                      );
                       rRead.addRecentContact(rm);
                     },
                     icon: Icon(Icons.phone),

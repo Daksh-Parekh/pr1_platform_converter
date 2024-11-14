@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pr1_platform_converter/utils/extension.dart';
+import 'package:pr1_platform_converter/utils/helper/shr_helper.dart';
 import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,9 @@ class _HomeIosPageState extends State<HomeIosPage> {
               value: hWatch.isPlatform,
               onChanged: (value) {
                 hRead.changePlatform();
+
+                ShrHelper helps = ShrHelper();
+                helps.savePlatform(value);
               },
             ),
             IconButton(
@@ -43,7 +47,7 @@ class _HomeIosPageState extends State<HomeIosPage> {
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
               child: ListView.separated(

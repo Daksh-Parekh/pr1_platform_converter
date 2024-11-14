@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:pr1_platform_converter/utils/helper/shr_helper.dart';
+import 'package:pr1_platform_converter/views/home_page/models/contact_model.dart';
 import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -14,41 +15,53 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late HomeProvider hRead, hWatch;
-  // @override
-  // void initState() {
-  //   ShrHelper shr = ShrHelper();
-  //   shr.getTheme().then(
-  //     (value) {
-  //       log('$value');
-  //       if (value == true) {
-  //         log('${value}');
-  //         hWatch.mode = ThemeMode.light;
-  //       } else {
-  //         hWatch.mode = ThemeMode.dark;
-  //       }
-  //     },
-  //   );
-  //   // TODO: implement initState
-  //   super.initState();
-  // }
 
   @override
   Widget build(BuildContext context) {
     hRead = context.read<HomeProvider>();
     hWatch = context.watch<HomeProvider>();
     return Scaffold(
+      drawer: Drawer(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              currentAccountPicture: CircleAvatar(
+                child: Icon(Icons.person_2_rounded),
+              ),
+              accountName: Text("User"),
+              accountEmail: Text("User@gmail.com"),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Platform Convert",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Switch(
+                    value: hWatch.isPlatform,
+                    onChanged: (value) {
+                      hRead.changePlatform();
+                      ShrHelper helps = ShrHelper();
+                      helps.savePlatform(value);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
         title: Text("Home Page"),
         actions: [
-          Switch(
-            value: hWatch.isPlatform,
-            onChanged: (value) {
-              hRead.changePlatform();
-            },
-          ),
           IconButton.filledTonal(
             onPressed: () {
               hRead.changeTheme();
+              // ShrHelper helps = ShrHelper();
+              // helps.saveTheme();
             },
             icon: hWatch.isThemeChange
                 ? Icon(Icons.dark_mode_rounded)

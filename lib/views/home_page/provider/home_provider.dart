@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pr1_platform_converter/utils/helper/shr_helper.dart';
 import 'package:pr1_platform_converter/views/home_page/models/contact_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeProvider with ChangeNotifier {
   bool isPlatform = true;
@@ -26,11 +29,14 @@ class HomeProvider with ChangeNotifier {
   void changeTheme() {
     isThemeChange = !isThemeChange;
     mode = isThemeChange ? ThemeMode.light : ThemeMode.dark;
+    ShrHelper helps = ShrHelper();
+    helps.saveTheme(isThemeChange);
     notifyListeners();
   }
 
   void changePlatform() {
     isPlatform = !isPlatform;
+    log('${isPlatform}hp');
     notifyListeners();
   }
 

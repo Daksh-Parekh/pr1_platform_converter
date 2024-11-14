@@ -19,7 +19,7 @@ class _RecentPageState extends State<RecentPage> {
     rWatch = context.watch<RecentContactProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: Text("Recdent Page"),
+        title: Text("Recent Page"),
       ),
       body: Padding(
         padding: EdgeInsets.all(16),
@@ -38,12 +38,10 @@ class _RecentPageState extends State<RecentPage> {
                     ),
               title: Text("${rWatch.recentContacts[index].rName}"),
               subtitle: Text("+91 ${rWatch.recentContacts[index].rContact}"),
-              // trailing: IconButton(
-              //   onPressed: () {
-              //     rRead.deleteContact(index);
-              //   },
-              //   icon: Icon(Icons.delete_forever_rounded),
-              // ),
+              trailing: Text(
+                "${rWatch.recentContacts[index].rdate?.hour}:${rWatch.recentContacts[index].rdate?.minute}",
+                style: TextStyle(fontSize: 20),
+              ),
               onTap: () {
                 context.read<HomeProvider>().setIndex(index);
                 Navigator.pushNamed(context, '/detail_Page',
