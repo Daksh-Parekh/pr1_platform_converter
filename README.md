@@ -24,27 +24,36 @@ cd contact-diary-app
    flutter run
 ## Screenshots
 
-Add screenshots of the app here to illustrate the various features. For example:
+**Android**
 
-1. **Platform Converter**
-   ![Platform Converter Screenshot](path/to/screenshot1.png)
+<img src="https://github.com/user-attachments/assets/b0ffceb6-48ff-41e6-a9a6-b9b4a71a8279" width="300px">
+<img src="https://github.com/user-attachments/assets/b4c62cbd-e49c-4c34-9211-c0e96de93291" width="300px">
+<img src="https://github.com/user-attachments/assets/0a22ba13-906f-4623-934b-3c5692fd1aa6" width="300px">
+<img src="https://github.com/user-attachments/assets/4f7a788f-e61c-4d7d-b68e-a54a46c8bb73" width="300px">
+<img src="https://github.com/user-attachments/assets/8899ada4-bd10-4b79-82b5-b8a637d0aefc" width="300px">
+<img src="https://github.com/user-attachments/assets/7d2b0e55-bb20-4807-a88e-bec892ded412" width="300px">
+<img src="https://github.com/user-attachments/assets/bb9fa1f2-abec-46f4-969a-d2551648f85d" width="300px">
+<img src="https://github.com/user-attachments/assets/66a2d6fd-eb18-42be-a2ac-66866a8e0383" width="300px">
 
-2. **Add Contact Page**
-   ![Add Contact Page Screenshot](path/to/screenshot2.png)
 
-3. **Recent Contacts Page**
-   ![Recent Contacts Page Screenshot](path/to/screenshot3.png)
+**iOS**
 
-4. **Contact Details**
-   ![Contact Details Screenshot](path/to/screenshot4.png)
+<img src="https://github.com/user-attachments/assets/cabb25aa-28eb-4559-98ea-9fc990693b15" width="300px">
+<img src="https://github.com/user-attachments/assets/06963fd3-17b8-4b97-bbcd-413e721b234a" width="300px">
+<img src="https://github.com/user-attachments/assets/33db87ab-2f61-461e-81bb-caf7c52760f0" width="300px">
+<img src="https://github.com/user-attachments/assets/59b09164-6aa2-4162-811d-71c893209488" width="300px">
+<img src="https://github.com/user-attachments/assets/c2965bf3-3985-497f-aae6-44252f5bbe45" width="300px">
+<img src="https://github.com/user-attachments/assets/a2714086-cb8f-44a8-bb21-412ef3c3f656" width="300px">
+<img src="https://github.com/user-attachments/assets/44d98951-1efc-4dd4-9f2f-2700528fffdb" width="300px">
+<img src="https://github.com/user-attachments/assets/65578708-8eac-4de3-bb34-7d3d21215754" width="300px">
+<img src="https://github.com/user-attachments/assets/39537ec8-3d29-4034-a7a4-32ee857f1388" width="300px">
 
-5. **Favorite Contacts**
-   ![Favorite Contacts Screenshot](path/to/screenshot5.png)
 
-6. **Theme Change (Light and Dark Mode)**
-   ![Theme Change Screenshot](path/to/screenshot6.png)
+**Video**
 
-Replace `path/to/screenshot.png` with the actual paths to your screenshots.
+
+https://github.com/user-attachments/assets/1045dfd5-2ca5-4ffe-93b8-e83865312922
+
 
 ---
 
