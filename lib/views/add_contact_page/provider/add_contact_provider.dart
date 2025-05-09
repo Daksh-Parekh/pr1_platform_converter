@@ -8,7 +8,7 @@ class AddContactProvider with ChangeNotifier {
   TextEditingController emailController = TextEditingController();
   TextEditingController contactController = TextEditingController();
   TextEditingController dobController = TextEditingController();
-  File? img;
+  String? img;
 
   int segmentControl = 0;
 
@@ -17,7 +17,7 @@ class AddContactProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setImage(File image) {
+  void setImage(String image) {
     img = image;
     notifyListeners();
   }
@@ -33,7 +33,7 @@ class AddContactProvider with ChangeNotifier {
     contactController.clear();
     emailController.clear();
     dobController.clear();
-    img == null;
+    img = null;
     setIndex = 0;
     segmentControl = 0;
     notifyListeners();

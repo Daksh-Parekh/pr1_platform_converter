@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -117,12 +119,15 @@ class _DetailIosPageState extends State<DetailIosPage> {
                         ),
                         CupertinoDialogAction(
                           onPressed: () {
-                            ContactModel model = ContactModel(
+                            ContactModel modal = ContactModel(
                               name: nameController.text,
                               email: emailController.text,
+                              contact: contactController.text,
                               dob: dobController.text,
+                              image: model.image,
+                              isFavorite: false,
                             );
-                            hRead.updateContacts(model);
+                            hRead.updateContacts(modal);
                             Navigator.pop(context);
                           },
                           child: Text("SAVE"),
@@ -157,7 +162,7 @@ class _DetailIosPageState extends State<DetailIosPage> {
             model.image != null
                 ? CircleAvatar(
                     radius: 70,
-                    foregroundImage: FileImage(model.image!),
+                    foregroundImage: FileImage(File(model.image!)),
                   )
                 : CircleAvatar(
                     radius: 70,

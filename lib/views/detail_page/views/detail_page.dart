@@ -43,7 +43,7 @@ class _DetailPageState extends State<DetailPage> {
               emailController.text = model.email!;
               contactController.text = model.contact!;
               dobController.text = model.dob!;
-              editDialog(context);
+              editDialog(context, model);
             },
             icon: Icon(Icons.edit),
           ),
@@ -61,69 +61,71 @@ class _DetailPageState extends State<DetailPage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            model.image != null
-                ? CircleAvatar(
-                    radius: 70,
-                    foregroundImage: FileImage(model.image!),
-                  )
-                : CircleAvatar(
-                    radius: 70,
-                    child: Text(
-                      model.name!.substring(0, 1).toUpperCase(),
-                      style: TextStyle(fontSize: 75),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              model.image != null
+                  ? CircleAvatar(
+                      radius: 70,
+                      foregroundImage: FileImage(File(model.image!)),
+                    )
+                  : CircleAvatar(
+                      radius: 70,
+                      child: Text(
+                        model.name!.substring(0, 1).toUpperCase(),
+                        style: TextStyle(fontSize: 75),
+                      ),
                     ),
-                  ),
-            15.h,
-            Text(model.name!),
-            12.h,
-            ListTile(
-              leading: Icon(Icons.mail),
-              title: Text(
-                model.email!,
+              15.h,
+              Text(model.name!),
+              12.h,
+              ListTile(
+                leading: Icon(Icons.mail),
+                title: Text(
+                  model.email!,
+                ),
               ),
-            ),
-            ListTile(
-              title: Text("+91 ${model.contact!}"),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton.filledTonal(
-                    onPressed: () async {
-                      await launchUrl(Uri.parse('tel:${model.contact}'));
+              ListTile(
+                title: Text("+91 ${model.contact!}"),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton.filledTonal(
+                      onPressed: () async {
+                        await launchUrl(Uri.parse('tel:${model.contact}'));
 
-                      RecentContactModel rm = RecentContactModel(
-                        rName: model.name,
-                        rImg: model.image,
-                        rContact: model.contact,
-                        remail: model.email,
-                        rdate: DateTime.now(),
-                      );
-                      rRead.addRecentContact(rm);
-                    },
-                    icon: Icon(Icons.phone),
-                  ),
-                  IconButton.filledTonal(
-                    onPressed: () async {
-                      await launchUrl(Uri.parse('sms:${model.contact}'));
-                    },
-                    icon: Icon(Icons.message_rounded),
-                  ),
-                ],
+                        RecentContactModel rm = RecentContactModel(
+                          rName: model.name,
+                          rImg: model.image,
+                          rContact: model.contact,
+                          remail: model.email,
+                          rdate: DateTime.now(),
+                        );
+                        rRead.addRecentContact(rm);
+                      },
+                      icon: Icon(Icons.phone),
+                    ),
+                    IconButton.filledTonal(
+                      onPressed: () async {
+                        await launchUrl(Uri.parse('sms:${model.contact}'));
+                      },
+                      icon: Icon(Icons.message_rounded),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            ListTile(
-              leading: Icon(Icons.calendar_month_rounded),
-              title: Text(model.dob!),
-            ),
-          ],
+              ListTile(
+                leading: Icon(Icons.calendar_month_rounded),
+                title: Text(model.dob!),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Future<dynamic> editDialog(BuildContext context) {
+  Future<dynamic> editDialog(BuildContext context, ContactModel m1) {
     return showDialog(
       context: context,
       builder: (context) {
@@ -195,9 +197,20 @@ class _DetailPageState extends State<DetailPage> {
                     name: nameController.text,
                     email: emailController.text,
                     contact: contactController.text,
-                    dob: dobController.text);
+                    dob: dobController.text,
+                    image: m1.image,
+                    isFavorite: m1.isFavorite);
                 context.read<HomeProvider>().updateContacts(model);
                 Navigator.pop(context);
+                Navigator.pop(context);
+
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(
+                    "Updation Successfull",
+                  ),
+                  backgroundColor: Colors.green,
+                  behavior: SnackBarBehavior.floating,
+                ));
               },
               child: Text("SAVE"),
             ),

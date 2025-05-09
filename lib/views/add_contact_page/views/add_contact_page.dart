@@ -22,20 +22,14 @@ class AddContactPage extends StatefulWidget {
 class _AddContactPageState extends State<AddContactPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   late AddContactProvider addRead, addWatch;
-  late HomeProvider homeRead;
-
-  @override
-  void dispose() {
-    addRead.reset();
-    // TODO: implement dispose
-    super.dispose();
-  }
+  late HomeProvider homeRead, homeWatch;
 
   @override
   Widget build(BuildContext context) {
     addRead = context.read<AddContactProvider>();
     addWatch = context.watch<AddContactProvider>();
     homeRead = context.read<HomeProvider>();
+    homeWatch = context.watch<HomeProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Contacts"),
@@ -60,8 +54,9 @@ class _AddContactPageState extends State<AddContactPage> {
               children: [
                 CircleAvatar(
                   radius: 80,
-                  foregroundImage:
-                      addWatch.img != null ? FileImage(addWatch.img!) : null,
+                  foregroundImage: addWatch.img != null
+                      ? FileImage(File(addWatch.img!))
+                      : null,
                 ),
                 FloatingActionButton.small(
                   child: Icon(Icons.add),
@@ -69,9 +64,10 @@ class _AddContactPageState extends State<AddContactPage> {
                     ImagePicker picker = ImagePicker();
                     XFile? img =
                         await picker.pickImage(source: ImageSource.gallery);
-
+                    log('-------------------${img}');
                     if (img != null) {
-                      addRead.setImage(File(img.path));
+                      addRead.setImage(img.path);
+                      log('${addWatch.img}');
                       // addWatch.img = File(img.path);
                       log('Image Received');
                     } else {
@@ -170,20 +166,32 @@ class _AddContactPageState extends State<AddContactPage> {
                   String email = addRead.emailController.text;
                   String contact = addRead.contactController.text;
                   String dob = addRead.dobController.text;
-                  File? images =
-                      addRead.img != null ? File(addRead.img!.path) : null;
-
+                  // File? images =
+                  //     addRead.img != null ? File(addRead.img!.path) : null;
+                  // log('$images');
                   ContactModel cm = ContactModel(
                       name: name,
                       email: email,
                       contact: contact,
                       dob: dob,
-                      image: images);
+                      image: addWatch.img,
+                      isFavorite: false);
                   homeRead.addContacts(cm);
 
                   ShrHelper helps = ShrHelper();
-                  helps.saveContacts(name, contact, email);
+                  helps.saveContacts(homeWatch.allContact);
+                  // helps.saveContacts(name, contact, email);
+
+                  addRead.reset();
                   Navigator.pop(context);
+
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      "Inserted Successfull",
+                    ),
+                    backgroundColor: Colors.green,
+                    behavior: SnackBarBehavior.floating,
+                  ));
                 }
               },
               child: Text("SAVE"),

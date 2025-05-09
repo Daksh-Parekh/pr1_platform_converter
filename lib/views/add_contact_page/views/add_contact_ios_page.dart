@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pr1_platform_converter/main.dart';
 import 'package:pr1_platform_converter/utils/extension.dart';
+import 'package:pr1_platform_converter/utils/helper/shr_helper.dart';
 import 'package:pr1_platform_converter/views/add_contact_page/provider/add_contact_provider.dart';
 import 'package:pr1_platform_converter/views/home_page/models/contact_model.dart';
 import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
@@ -23,7 +24,7 @@ class _AddContactIosPageState extends State<AddContactIosPage> {
   // late HomeProvider hRead, hWatch;
   late AddContactProvider addRead, addWatch;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  late HomeProvider homeRead;
+  late HomeProvider homeRead, homeWatch;
   @override
   void dispose() {
     addRead.reset();
@@ -36,24 +37,35 @@ class _AddContactIosPageState extends State<AddContactIosPage> {
     addRead = context.read<AddContactProvider>();
     addWatch = context.watch<AddContactProvider>();
     homeRead = context.read<HomeProvider>();
+    homeWatch = context.watch<HomeProvider>();
+    Size size = MediaQuery.sizeOf(context);
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: CupertinoSlidingSegmentedControl(
-          children: {
-            0: Text("Photo"),
-            1: Text("Personal"),
-            2: Text("Save"),
-          },
-          onValueChanged: (value) {
-            addRead.changeSegmentControl(value!);
-          },
-          groupValue: addWatch.segmentControl,
-        ),
+        middle: Text("Detail Page"),
       ),
-      child: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: size.height * 0.08),
+            Row(
+              children: [
+                Expanded(
+                  child: CupertinoSlidingSegmentedControl(
+                    children: {
+                      0: Text("Photo"),
+                      1: Text("Personal"),
+                      2: Text("Save"),
+                    },
+                    onValueChanged: (value) {
+                      addRead.changeSegmentControl(value!);
+                    },
+                    groupValue: addWatch.segmentControl,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: size.height * 0.05),
             addWatch.segmentControl == 0
                 ? Stack(
                     alignment: Alignment.bottomRight,
@@ -61,7 +73,7 @@ class _AddContactIosPageState extends State<AddContactIosPage> {
                       CircleAvatar(
                         radius: 80,
                         foregroundImage: addWatch.img != null
-                            ? FileImage(addWatch.img!)
+                            ? FileImage(File(addWatch.img!))
                             : null,
                       ),
                       FloatingActionButton.small(
@@ -71,7 +83,7 @@ class _AddContactIosPageState extends State<AddContactIosPage> {
                               source: ImageSource.gallery);
                           if (image != null) {
                             addRead.setImage(
-                              File(image.path),
+                              image.path,
                             );
                           }
                         },
@@ -184,23 +196,27 @@ class _AddContactIosPageState extends State<AddContactIosPage> {
                           String email = addRead.emailController.text;
                           String contact = addRead.contactController.text;
                           String dob = addRead.dobController.text;
-                          File? images = addRead.img != null
-                              ? File(addRead.img!.path)
-                              : null;
+                          // File? images = addRead.img != null
+                          //     ? File(addRead.img!.path)
+                          //     : null;
 
                           ContactModel cm = ContactModel(
-                            name: name,
-                            email: email,
-                            contact: contact,
-                            dob: dob,
-                            image: images,
-                          );
+                              name: name,
+                              email: email,
+                              contact: contact,
+                              dob: dob,
+                              image: addWatch.img,
+                              isFavorite: false);
                           homeRead.addContacts(cm);
+                          ShrHelper helps = ShrHelper();
+                          helps.saveContacts(homeWatch.allContact);
+
+                          addRead.reset();
                           Navigator.pop(context);
                           // }
                         },
                       ),
-            Text("${addWatch.segmentControl}"),
+            // Text("${addWatch.segmentControl}"),
           ],
         ),
       ),

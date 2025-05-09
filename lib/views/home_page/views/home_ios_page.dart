@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pr1_platform_converter/utils/extension.dart';
@@ -15,6 +18,13 @@ class HomeIosPage extends StatefulWidget {
 class _HomeIosPageState extends State<HomeIosPage> {
   late HomeProvider hRead, hWatch;
   @override
+  void initState() {
+    context.read<HomeProvider>().getContactData();
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     hRead = context.read<HomeProvider>();
     hWatch = context.watch<HomeProvider>();
@@ -29,13 +39,13 @@ class _HomeIosPageState extends State<HomeIosPage> {
               onChanged: (value) {
                 hRead.changePlatform();
 
-                ShrHelper helps = ShrHelper();
-                helps.savePlatform(value);
+                // ShrHelper helps = ShrHelper();
+                // helps.savePlatform(value);
               },
             ),
             IconButton(
               onPressed: () {
-                hRead.changeIosTheme();
+                hRead.changeTheme();
               },
               icon: hWatch.isThemeChange
                   ? Icon(CupertinoIcons.moon_stars_fill)
@@ -52,32 +62,39 @@ class _HomeIosPageState extends State<HomeIosPage> {
             Expanded(
               child: ListView.separated(
                 itemBuilder: (context, index) {
-                  return CupertinoListTile(
-                    leading: hWatch.allContact[index].image != null
-                        ? CircleAvatar(
-                            foregroundImage:
-                                FileImage(hWatch.allContact[index].image!),
-                          )
-                        : CircleAvatar(
-                            child: Text(
-                                hWatch.allContact[index].name!.substring(0, 1)),
-                          ),
-                    title: Text(hWatch.allContact[index].name ?? ""),
-                    subtitle: Text("+91 ${hWatch.allContact[index].contact}"),
-                    trailing: IconButton(
-                        onPressed: () {
-                          hRead.deleteContact(index);
-                        },
-                        icon: Icon(CupertinoIcons.delete)),
-                    onTap: () {
-                      hRead.setIndex(index);
-                      Navigator.pushNamed(context, '/detail_iOS_Page',
-                          arguments: hRead.allContact[index]);
-                    },
+                  return Visibility(
+                    visible: hWatch.allContact[index].isFavorite == false,
+                    child: CupertinoListTile(
+                      leading: hWatch.allContact[index].image != null
+                          ? CircleAvatar(
+                              foregroundImage: FileImage(
+                                  File(hWatch.allContact[index].image!)),
+                            )
+                          : CircleAvatar(
+                              child: Text(hWatch.allContact[index].name!
+                                  .substring(0, 1)
+                                  .toUpperCase()),
+                            ),
+                      title: Text(hWatch.allContact[index].name ?? ""),
+                      subtitle: Text("+91 ${hWatch.allContact[index].contact}"),
+                      trailing: IconButton.outlined(
+                          onPressed: () {
+                            log("Presed");
+                            hRead.deleteContact(index);
+                          },
+                          icon: Icon(CupertinoIcons.delete)),
+                      onTap: () {
+                        hRead.setIndex(index);
+                        Navigator.pushNamed(context, '/detail_iOS_Page',
+                            arguments: hRead.allContact[index]);
+                      },
+                    ),
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return Divider();
+                  return Visibility(
+                      visible: hWatch.allContact[index].isFavorite == false,
+                      child: Divider());
                 },
                 itemCount: hWatch.allContact.length,
               ),

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:pr1_platform_converter/routes/app_routes.dart';
 import 'package:pr1_platform_converter/views/add_contact_page/views/add_contact_ios_page.dart';
 import 'package:pr1_platform_converter/views/favorite_page/views/favorite_ios_page.dart';
 import 'package:pr1_platform_converter/views/home_page/views/home_ios_page.dart';
@@ -39,6 +40,7 @@ class _TabBarIosState extends State<TabBarIos> {
       ),
       tabBuilder: (context, index) {
         return CupertinoTabView(
+          routes: AppRoutes.iOSRoutes,
           builder: (context) {
             return screens[index];
           },

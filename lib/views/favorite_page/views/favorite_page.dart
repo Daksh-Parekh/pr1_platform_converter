@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pr1_platform_converter/main.dart';
 import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
@@ -25,6 +27,7 @@ class _FavoritePageState extends State<FavoritePage> {
       body: Padding(
         padding: EdgeInsets.all(16),
         child: ListView.separated(
+          itemCount: hWatch.allContact.length,
           itemBuilder: (context, index) {
             return Visibility(
               visible: hWatch.allContact[index].isFavorite == true,
@@ -32,11 +35,11 @@ class _FavoritePageState extends State<FavoritePage> {
                 leading: hWatch.allContact[index].image != null
                     ? CircleAvatar(
                         foregroundImage:
-                            FileImage(hWatch.allContact[index].image!),
+                            FileImage(File(hWatch.allContact[index].image!)),
                       )
                     : CircleAvatar(
                         child: Text(
-                            "${hWatch.allContact[index].name!.substring(0, 1)}"),
+                            "${hWatch.allContact[index].name!.substring(0, 1).toUpperCase()}"),
                       ),
                 title: Text("${hWatch.allContact[index].name}"),
                 subtitle: Text("+91 ${hWatch.allContact[index].contact}"),
@@ -56,9 +59,10 @@ class _FavoritePageState extends State<FavoritePage> {
             );
           },
           separatorBuilder: (context, index) {
-            return Divider();
+            return Visibility(
+                visible: hWatch.allContact[index].isFavorite == true,
+                child: Divider());
           },
-          itemCount: hWatch.allContact.length,
         ),
       ),
     );

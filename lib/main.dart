@@ -19,7 +19,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(
-          value: HomeProvider(),
+          value: HomeProvider()
+            ..getThemes()
+            ..getPlatform()
+            ..getContactData(),
         ),
         ChangeNotifierProvider.value(
           value: AddContactProvider(),
@@ -36,14 +39,17 @@ class MyApp extends StatelessWidget {
           return value.isPlatform
               ? MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  themeMode: value.mode,
+                  themeMode:
+                      value.isThemeChange ? ThemeMode.dark : ThemeMode.light,
                   darkTheme: ThemeData(brightness: Brightness.dark),
                   routes: AppRoutes.routes,
                 )
               : CupertinoApp(
                   debugShowCheckedModeBanner: false,
                   theme: CupertinoThemeData(
-                    brightness: value.brightness,
+                    brightness: value.isThemeChange
+                        ? Brightness.dark
+                        : Brightness.light,
                   ),
                   routes: AppRoutes.iOSRoutes,
                 );

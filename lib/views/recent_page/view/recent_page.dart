@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pr1_platform_converter/main.dart';
 import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
@@ -30,11 +32,11 @@ class _RecentPageState extends State<RecentPage> {
               leading: rWatch.recentContacts[index].rImg != null
                   ? CircleAvatar(
                       foregroundImage:
-                          FileImage(rWatch.recentContacts[index].rImg!),
+                          FileImage(File(rWatch.recentContacts[index].rImg!)),
                     )
                   : CircleAvatar(
                       child: Text(
-                          "${rWatch.recentContacts[index].rName!.substring(0, 1)}"),
+                          "${rWatch.recentContacts[index].rName!.substring(0, 1).toUpperCase()}"),
                     ),
               title: Text("${rWatch.recentContacts[index].rName}"),
               subtitle: Text("+91 ${rWatch.recentContacts[index].rContact}"),
@@ -42,11 +44,11 @@ class _RecentPageState extends State<RecentPage> {
                 "${rWatch.recentContacts[index].rdate?.hour}:${rWatch.recentContacts[index].rdate?.minute}",
                 style: TextStyle(fontSize: 20),
               ),
-              onTap: () {
-                context.read<HomeProvider>().setIndex(index);
-                Navigator.pushNamed(context, '/detail_Page',
-                    arguments: rRead.recentContacts[index]);
-              },
+              // onTap: () {
+              //   context.read<HomeProvider>().setIndex(index);
+              //   Navigator.pushNamed(context, '/detail_Page',
+              //       arguments: rRead.recentContacts[index]);
+              // },
             );
           },
           separatorBuilder: (context, index) {

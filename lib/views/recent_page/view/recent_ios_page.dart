@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pr1_platform_converter/views/home_page/provider/home_provider.dart';
@@ -31,7 +33,7 @@ class _RecentIosPageState extends State<RecentIosPage> {
             leading: rWatch.recentContacts[index].rImg != null
                 ? CircleAvatar(
                     foregroundImage:
-                        FileImage(rWatch.recentContacts[index].rImg!),
+                        FileImage(File(rWatch.recentContacts[index].rImg!)),
                   )
                 : CircleAvatar(
                     child: Text(

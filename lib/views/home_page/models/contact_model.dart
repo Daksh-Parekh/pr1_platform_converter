@@ -2,7 +2,7 @@ import 'dart:io';
 
 class ContactModel {
   String? name, email, contact, dob;
-  File? image;
+  String? image;
   bool? isFavorite = false;
   ContactModel(
       {this.name,
@@ -15,7 +15,7 @@ class ContactModel {
 
 class RecentContactModel {
   String? rName, rContact, remail;
-  File? rImg;
+  String? rImg;
   DateTime? rdate;
   RecentContactModel(
       {this.rName, this.remail, this.rContact, this.rImg, this.rdate});
